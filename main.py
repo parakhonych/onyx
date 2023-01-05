@@ -13,10 +13,22 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.images = dict()
         self.unique_number = 0
 
+        self.mdi.subWindowActivated.connect(self.update_active_window)
+
         # Define File menu actions
         self.action_open_gray.triggered.connect(self.open_gray)
         self.action_open_color.triggered.connect(self.open_color)
+        self.action_save.triggered.connect(self.save_image)
 
+        # Define File menu actions
+        self.action_duplicate.triggered.connect(self.image_duplication)
+
+    def __add_window(self, img_name, img_data, gray):
+        self.unique_number = self.unique_number + 1
+        image = Image(img_name, img_data, gray, self.unique_number)
+        self.images[self.unique_number] = image
+        self.mdi.addSubWindow(image.sub_window)
+        image.sub_window.show()
     def open_gray(self):
         files_paths, _ = QFileDialog.getOpenFileNames(self, "Open file", "", "Image files (*.bmp *.jpeg *.jpg *.bmp "
                                                                              "*.png *.tiff *.tif);;")
@@ -39,12 +51,20 @@ class MainWindow(QMainWindow, MainWindowUI):
             img_data = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
         else:
             img_data = cv2.imread(file_path, cv2.IMREAD_UNCHANGED)
-        self.unique_number = self.unique_number + 1
-        image = Image(img_name, img_data, gray, self.unique_number)
-        self.images[self.unique_number] = image
-        self.mdi.addSubWindow(image.sub_window)
-        image.sub_window.show()
+        self.__add_window(img_name, img_data, gray)
 
+    def update_active_window(self, sub):
+        if sub is not None:
+            if sub.unique_number in self.images:
+                self.active_image = self.images.get(sub.unique_number)
+    def save_image(self):
+        file_path, _ = QFileDialog.getSaveFileName(self, "Save file", self.active_image.name, "All Files (*);;")
+        if not file_path:
+            return
+        cv2.imwrite(file_path, self.active_image.data)
+
+    def image_duplication(self):
+        self.__add_window("duplication " + self.active_image.name, self.active_image.data, self.active_image.gray)
 
 if __name__ == "__main__":
     app = QApplication([])
