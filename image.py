@@ -14,6 +14,7 @@ class Image:
         self.gray = gray
         self.unique_number = unique_number
         self.sub_window = ImageWindow(img_name, img_data, gray, unique_number)
+        self.is_image = True
 
 class ImageWindow(QMdiSubWindow):
     def __init__(self, img_name, img_data, gray, unique_number, parent=None):
@@ -36,8 +37,8 @@ class ImageWindow(QMdiSubWindow):
             pixel_bytes = self.data.dtype.itemsize
             image = QImage(self.data, width, height, width, BYTES_PER_PIXEL_2_BW_FORMAT[pixel_bytes])
         else:
-            rgb_image = cv2.cvtColor(self.data, cv2.COLOR_BGR2RGB)
-            image = QImage(rgb_image, width, height, 3 * width, QImage.Format_BGR888)
+            #rgb_image = cv2.cvtColor(self.data, cv2.COLOR_BGR2RGB)
+            image = QImage(self.data, width, height, 3 * width, QImage.Format_BGR888)
         self.pixmap = QPixmap(image)
         self.pixmap = self.pixmap.scaled(self.scale * self.pixmap.size())
         self.setFixedSize(self.pixmap.width() + 15, self.pixmap.height() + 35)

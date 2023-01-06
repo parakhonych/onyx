@@ -1,7 +1,9 @@
 import cv2
+import numpy as np
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
 from main_ui import MainWindowUI
 from image import Image
+from histogram import HistogramSub
 
 class MainWindow(QMainWindow, MainWindowUI):
     def __init__(self, parent=None):
@@ -20,8 +22,11 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.action_open_color.triggered.connect(self.open_color)
         self.action_save.triggered.connect(self.save_image)
 
-        # Define File menu actions
+        # Define Windows menu actions
         self.action_duplicate.triggered.connect(self.image_duplication)
+
+        # Define Functions menu actions
+        self.action_histogram.triggered.connect(self.show_histogram)
 
     def __add_window(self, img_name, img_data, gray):
         self.unique_number = self.unique_number + 1
@@ -65,6 +70,17 @@ class MainWindow(QMainWindow, MainWindowUI):
 
     def image_duplication(self):
         self.__add_window("duplication " + self.active_image.name, self.active_image.data, self.active_image.gray)
+
+    def show_histogram(self):
+        self.unique_number = self.unique_number + 1
+        hist = HistogramSub(self.unique_number, self.active_image)
+        self.mdi.addSubWindow(hist)
+
+        self.unique_number = self.unique_number + 1
+        self.mdi.addSubWindow(hist.histogram_list)
+
+        hist.show()
+
 
 if __name__ == "__main__":
     app = QApplication([])

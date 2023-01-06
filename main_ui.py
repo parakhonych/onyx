@@ -1,17 +1,16 @@
 from PyQt5 import QtCore, QtWidgets
 
-
 class MainWindowUI:
     def init_ui(self, main_window):
         main_window.setObjectName("main_window")
-        main_window.resize(800, 600)
+        main_window.resize(900, 800)
 
         self.mdi = QtWidgets.QMdiArea()
         self.mdi.setObjectName("mdi_area")
         main_window.setCentralWidget(self.mdi)
 
         self.menu_bar = QtWidgets.QMenuBar(main_window)
-        self.menu_bar.setGeometry(QtCore.QRect(0, 0, 720, 21))
+        self.menu_bar.setGeometry(QtCore.QRect(0, 0, 720, 15))
         self.menu_bar.setObjectName("menu_bar")
 
         self.menu_file = QtWidgets.QMenu(self.menu_bar)
@@ -19,7 +18,6 @@ class MainWindowUI:
 
         self.menu_windows = QtWidgets.QMenu(self.menu_bar)
         self.menu_file.setObjectName("menu_windows")
-
 
         self.menu_functions = QtWidgets.QMenu(self.menu_bar)
         self.menu_functions.setObjectName("menu_function")
@@ -29,8 +27,10 @@ class MainWindowUI:
         # File menu
         self.action_open_gray = QtWidgets.QAction(main_window)
         self.action_open_gray.setObjectName("action_open_gray")
+
         self.action_open_color = QtWidgets.QAction(main_window)
         self.action_open_color.setObjectName("action_open_color")
+
         self.action_save = QtWidgets.QAction(main_window)
         self.action_save.setObjectName("action_save")
 
@@ -49,7 +49,6 @@ class MainWindowUI:
         self.action_histogram.setObjectName("action_histogram")
 
         self.menu_functions.addAction(self.action_histogram)
-
 
         self.menu_bar.addAction(self.menu_file.menuAction())
         self.menu_bar.addAction(self.menu_windows.menuAction())
