@@ -24,6 +24,14 @@ class MainWindow(QMainWindow, MainWindowUI):
 
         # Define Windows menu actions
         self.action_duplicate.triggered.connect(self.image_duplication)
+        self.action_cascade.triggered.connect(self.mdi.cascadeSubWindows)
+        self.action_zoom_50.triggered.connect(lambda: self.zoom_in(0.5))
+        self.action_zoom_75.triggered.connect(lambda: self.zoom_in(0.75))
+        self.action_zoom_80.triggered.connect(lambda: self.zoom_in(0.8))
+        self.action_zoom_90.triggered.connect(lambda: self.zoom_in(0.9))
+        self.action_zoom_100.triggered.connect(lambda: self.zoom_in(1))
+        self.action_zoom_150.triggered.connect(lambda: self.zoom_in(1.5))
+        self.action_zoom_200.triggered.connect(lambda: self.zoom_in(2))
 
         # Define Functions menu actions
         self.action_histogram.triggered.connect(self.show_histogram)
@@ -34,6 +42,11 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.images[self.unique_number] = image
         self.mdi.addSubWindow(image.sub_window)
         image.sub_window.show()
+
+    def zoom_in(self, scale):
+        self.active_image.sub_window.scale = scale
+        self.active_image.sub_window.update_window()
+
     def open_gray(self):
         files_paths, _ = QFileDialog.getOpenFileNames(self, "Open file", "", "Image files (*.bmp *.jpeg *.jpg *.bmp "
                                                                              "*.png *.tiff *.tif);;")

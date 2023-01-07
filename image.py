@@ -13,18 +13,18 @@ class Image:
         self.name = img_name
         self.gray = gray
         self.unique_number = unique_number
-        self.sub_window = ImageWindow(img_name, img_data, gray, unique_number)
+        self.sub_window = ImageWindow(img_name, img_data, gray, unique_number, scale=1)
         self.is_image = True
 
 class ImageWindow(QMdiSubWindow):
-    def __init__(self, img_name, img_data, gray, unique_number, parent=None):
+    def __init__(self, img_name, img_data, gray, unique_number, scale, parent=None):
         super().__init__(parent)
         self.data = img_data
         self.name = img_name
         self.gray = gray
         self.unique_number = unique_number
         self.image_label = QLabel()
-        self.scale = 1
+        self.scale = scale
         self.pixmap = None
         self.setWidget(self.image_label)
         self.setWindowTitle(img_name)
